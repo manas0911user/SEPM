@@ -1,4 +1,4 @@
-# 🚀 AI Workflow Automation Platform (HIPO)
+# 🚀 AI Workflow Automation Platform 
 
 A full-stack AI-powered workflow automation platform that allows users to create, connect, and execute intelligent workflows using a visual drag-and-drop interface.
 
