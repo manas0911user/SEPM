@@ -7,15 +7,30 @@ import mongoose from "mongoose";
 import aiRoutes from "./routes/aiRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
 
-const app = express(); // ✅ FIRST create app
+const app = express();
+
+// 🔥 CORS FIX (IMPORTANT)
+app.use(
+  cors({
+    origin: [
+      "http://localhost:3000",
+      "https://sepm-ten.vercel.app", // 👈 tera frontend URL
+    ],
+    credentials: true,
+  })
+);
 
 // 🔥 Middlewares
-app.use(cors());
 app.use(express.json());
 
 // 🔥 Routes
-app.use("/api/auth", authRoutes); // ✅ AFTER app defined
+app.use("/api/auth", authRoutes);
 app.use("/api/ai", aiRoutes);
+
+// 🔥 Health check (optional but useful)
+app.get("/", (req, res) => {
+  res.send("API is running 🚀");
+});
 
 // 🔥 MongoDB connect
 mongoose
@@ -23,8 +38,9 @@ mongoose
   .then(() => console.log("MongoDB connected"))
   .catch((err) => console.log("DB Error:", err));
 
-// 🔥 Server start
-const PORT = 5000;
+// 🔥 Use dynamic port (IMPORTANT for Render)
+const PORT = process.env.PORT || 5000;
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
