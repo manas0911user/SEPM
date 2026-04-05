@@ -30,7 +30,7 @@ export default function AIPage() {
     setLoading(true);
 
     try {
-      const res = await axios.post("http://localhost:5000/api/ai/chat", {
+      const res = await axios.post("https://ai-workflow-backend-5dtn.onrender.com/api/ai/chat", {
         message: input,
       });
 
