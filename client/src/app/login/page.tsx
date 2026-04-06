@@ -35,25 +35,19 @@ export default function Login() {
 
       const res = await axios.post(
         "https://ai-workflow-backend-5dtn.onrender.com/api/auth/login",
-        {
-          email,
-          password,
-        }
+        { email, password }
       );
 
-      // ✅ Save token
       localStorage.setItem("token", res.data.token);
-
-      // ✅ Redirect
       router.push("/dashboard");
 
     } catch (err: unknown) {
-  if (err instanceof Error) {
-    setError(err.message);
-  } else {
-    setError("Something went wrong");
-  }
-}
+      if (axios.isAxiosError(err)) {
+        setError(err.response?.data?.message || err.message);
+      } else {
+        setError("Something went wrong");
+      }
+    }
   };
 
   return (
@@ -61,17 +55,14 @@ export default function Login() {
       <div className="glass-card p-8 w-full max-w-md">
 
         <h2 className="text-3xl font-bold text-center mb-6">
-          Welcome Back 
+          Welcome Back
         </h2>
 
         <input
           type="email"
           placeholder="Enter Gmail"
           value={email}
-          onChange={(e) => {
-            setEmail(e.target.value);
-            setError("");
-          }}
+          onChange={(e) => { setEmail(e.target.value); setError(""); }}
           className="w-full p-3 mb-3 rounded-lg bg-white/20 placeholder-gray-300 outline-none focus:ring-2 focus:ring-purple-400"
         />
 
@@ -79,10 +70,7 @@ export default function Login() {
           type="password"
           placeholder="Password"
           value={password}
-          onChange={(e) => {
-            setPassword(e.target.value);
-            setError("");
-          }}
+          onChange={(e) => { setPassword(e.target.value); setError(""); }}
           className="w-full p-3 mb-4 rounded-lg bg-white/20 placeholder-gray-300 outline-none focus:ring-2 focus:ring-purple-400"
         />
 
@@ -98,7 +86,7 @@ export default function Login() {
         </button>
 
         <p className="text-center text-sm mt-5 text-gray-300">
-          Don’t have an account?{" "}
+          Dont have an account?{" "}
           <Link href="/signup" className="text-white underline">
             Sign up
           </Link>
