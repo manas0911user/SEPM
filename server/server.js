@@ -6,41 +6,31 @@ import cors from "cors";
 import mongoose from "mongoose";
 import aiRoutes from "./routes/aiRoutes.js";
 import authRoutes from "./routes/authRoutes.js";
+import workflowRoutes from "./routes/workflowRoutes.js";
 
 const app = express();
 
-// 🔥 CORS FIX (IMPORTANT)
-app.use(
-  cors({
-    origin: [
-      "http://localhost:3000",
-      "https://sepm-ten.vercel.app", // 👈 tera frontend URL
-    ],
-    credentials: true,
-  })
-);
+app.use(cors({
+  origin: [
+    "http://localhost:3000",
+    "https://sepm-ten.vercel.app",
+  ],
+  credentials: true,
+}));
 
-// 🔥 Middlewares
 app.use(express.json());
 
-// 🔥 Routes
+// 🔥 Routes (sab saath)
 app.use("/api/auth", authRoutes);
 app.use("/api/ai", aiRoutes);
+app.use("/api/workflow", workflowRoutes);
 
-// 🔥 Health check (optional but useful)
-app.get("/", (req, res) => {
-  res.send("API is running 🚀");
-});
+app.get("/", (req, res) => res.send("API is running 🚀"));
 
-// 🔥 MongoDB connect
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB connected"))
   .catch((err) => console.log("DB Error:", err));
 
-// 🔥 Use dynamic port (IMPORTANT for Render)
 const PORT = process.env.PORT || 5000;
-
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`);
-});
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
